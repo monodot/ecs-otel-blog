@@ -24,7 +24,7 @@ The Holiday API is a simple RESTful service that manages holiday packages. It us
 
 1. Copy the sample environment file:
    ```shell
-   cp app/.env.sample app/.env
+   cp .env.sample .env
    ```
 
 2. Update the `.env` file with your Grafana Cloud credentials:
@@ -57,6 +57,17 @@ The full list of endpoints is:
 - `DELETE /packages/:id` - Delete a package
 - `GET /health` - Health check endpoint
 
+### Deployment to ECS Fargate
+
+This application is designed to be deployed as an ECS Fargate task to demonstrate how to observe ECS Fargate workloads with OpenTelemetry.
+
+When deploying to ECS Fargate:
+
+1. Build and push the Docker image to ECR
+2. Configure task definitions with the same environment variables given in the compose.yaml definition.
+3. Set up the necessary IAM roles and security groups to run your task.
+4. Deploy the task to your ECS cluster
+
 ## Observability setup
 
 ### OpenTelemetry Configuration
@@ -72,17 +83,7 @@ This application is configured with zero-code OpenTelemetry, which automatically
 
 Logs are written using the Winston logging library and automatically forwarded to OpenTelemetry. The application uses the `@opentelemetry/winston-transport` package to integrate Winston with OpenTelemetry and logging is configured in app/logger.js.
 
-### Deployment to ECS Fargate
-
-This application is designed to be deployed as an ECS Fargate task to demonstrate how to observe ECS Fargate workloads with OpenTelemetry.
-
-When deploying to ECS Fargate:
-
-1. Build and push the Docker image to ECR
-2. Configure task definitions with the same environment variables given in the compose.yaml definition.
-3. Set up the necessary IAM roles and security groups to run your task.
-4. Deploy the task to your ECS cluster
-
 ## License
 
-ISC
+AGPL
+
