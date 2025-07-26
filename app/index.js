@@ -79,6 +79,7 @@ const initDatabase = async () => {
 app.get('/packages', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM holiday_packages ORDER BY id');
+        console.log('Fetched packages:', result.rows.length);
         res.json(result.rows);
     } catch (err) {
         console.error('Error fetching packages:', err);

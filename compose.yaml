@@ -19,7 +19,8 @@ services:
       retries: 5
 
   api:
-    build: app
+    build:
+      context: app
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
@@ -27,15 +28,22 @@ services:
       DB_USER: postgres
       DB_PASSWORD: password
       PORT: 3000
+      # OpenTelemetry environment variables
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: otlp
+      OTEL_NODE_RESOURCE_DETECTORS: env,host,os
+      OTEL_RESOURCE_ATTRIBUTES: "service.name=holiday-api,service.namespace=holidays,deployment.environment=development"
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_EXPORTER_OTLP_HEADERS: ${OTEL_EXPORTER_OTLP_HEADERS}
+      OTEL_LOG_LEVEL: info  # change to debug for more verbosity
+      NODE_OPTIONS: "--require @opentelemetry/auto-instrumentations-node/register"  # Essential to bootstrap OpenTelemetry
     ports:
       - "3000:3000"
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./app:/app
-      - /app/node_modules
-    command: npm run dev
 
 volumes:
   postgres_data:
