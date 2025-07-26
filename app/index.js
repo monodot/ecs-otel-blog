@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const {Pool} = require('pg');
+const logger = require('./logger'); // Pull in Winston logger configuration
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -41,7 +42,7 @@ const initDatabase = async () => {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
         `);
-        console.log('Database table initialized');
+        logger.info('Database table initialized');
 
         // Check if we need to insert sample data (only for development)
         if (process.env.NODE_ENV !== 'production') {
@@ -67,11 +68,11 @@ const initDatabase = async () => {
                             'Architectural wonders and beautiful Mediterranean beaches') ON CONFLICT DO NOTHING;
 
                 `);
-                console.log('Sample data inserted');
+                logger.info('Sample data inserted');
             }
         }
     } catch (err) {
-        console.error('Error initializing database:', err);
+        logger.error('Error initializing database:', err);
     }
 };
 
@@ -79,10 +80,10 @@ const initDatabase = async () => {
 app.get('/packages', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM holiday_packages ORDER BY id');
-        console.log('Fetched packages:', result.rows.length);
+        logger.info('Fetched packages:', result.rows.length);
         res.json(result.rows);
     } catch (err) {
-        console.error('Error fetching packages:', err);
+        logger.error('Error fetching packages:', err);
         res.status(500).json({error: 'Internal server error'});
     }
 });
@@ -99,7 +100,7 @@ app.get('/packages/:id', async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (err) {
-        console.error('Error fetching package:', err);
+        logger.error('Error fetching package:', err);
         res.status(500).json({error: 'Internal server error'});
     }
 });
@@ -124,7 +125,7 @@ app.post('/packages', async (req, res) => {
 
         res.status(201).json(result.rows[0]);
     } catch (err) {
-        console.error('Error creating package:', err);
+        logger.error('Error creating package:', err);
         res.status(500).json({error: 'Internal server error'});
     }
 });
@@ -160,7 +161,7 @@ app.put('/packages/:id', async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (err) {
-        console.error('Error updating package:', err);
+        logger.error('Error updating package:', err);
         res.status(500).json({error: 'Internal server error'});
     }
 });
@@ -177,7 +178,7 @@ app.delete('/packages/:id', async (req, res) => {
 
         res.json({message: 'Package deleted successfully', package: result.rows[0]});
     } catch (err) {
-        console.error('Error deleting package:', err);
+        logger.error('Error deleting package:', err);
         res.status(500).json({error: 'Internal server error'});
     }
 });
@@ -190,15 +191,15 @@ app.get('/health', (req, res) => {
 const startServer = async () => {
     await initDatabase();
     app.listen(port, () => {
-        console.log(`Holiday packages API running on port ${port}`);
-        console.log(`Health check: http://localhost:${port}/health`);
-        console.log(`API endpoints:`);
-        console.log(`  GET    /packages     - Get all packages`);
-        console.log(`  GET    /packages/:id - Get package by ID`);
-        console.log(`  POST   /packages     - Create new package`);
-        console.log(`  PUT    /packages/:id - Update package`);
-        console.log(`  DELETE /packages/:id - Delete package`);
+        logger.info(`Holiday packages API running on port ${port}`);
+        logger.info(`Health check: http://localhost:${port}/health`);
+        logger.info(`API endpoints:`);
+        logger.info(`  GET    /packages     - Get all packages`);
+        logger.info(`  GET    /packages/:id - Get package by ID`);
+        logger.info(`  POST   /packages     - Create new package`);
+        logger.info(`  PUT    /packages/:id - Update package`);
+        logger.info(`  DELETE /packages/:id - Delete package`);
     });
 };
 
-startServer().catch(console.error);
+startServer().catch(logger.error);
