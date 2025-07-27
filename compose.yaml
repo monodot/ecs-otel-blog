@@ -45,5 +45,12 @@ services:
       postgres:
         condition: service_healthy
 
+  # Start up a local Loki, Grafana, Tempo & Mimir stack (OpenTelemetry backend-in-a-box)
+  lgtm:
+    profiles: [local]
+    image: docker.io/grafana/otel-lgtm:latest
+    ports:
+      - "3000:3000"
+
 volumes:
   postgres_data:
