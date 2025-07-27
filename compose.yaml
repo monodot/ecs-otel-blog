@@ -27,7 +27,7 @@ services:
       DB_NAME: holiday_db
       DB_USER: postgres
       DB_PASSWORD: password
-      PORT: 3000
+      PORT: 8080
       # OpenTelemetry environment variables
       OTEL_TRACES_EXPORTER: otlp
       OTEL_METRICS_EXPORTER: otlp
@@ -40,7 +40,7 @@ services:
       NODE_OPTIONS: "--require @opentelemetry/auto-instrumentations-node/register"  # Essential to bootstrap OpenTelemetry
       # OTEL_LOG_LEVEL: debug  # optional debug logging
     ports:
-      - "3000:3000"
+      - "8080:8080"
     depends_on:
       postgres:
         condition: service_healthy
