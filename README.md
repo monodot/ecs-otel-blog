@@ -32,8 +32,6 @@ When deploying to ECS Fargate:
 There is a Terraform configuration included with this repo. To create ECS resources in AWS, and build and push the included demo app, run these commands:
 
 ```shell
-cd terraform
-
 terraform -chdir=terraform init
 
 # Set up your authentication to AWS (or however you do it)
