@@ -3,6 +3,13 @@ resource "random_password" "db" {
   length           = 16
 }
 
+resource "aws_ssm_parameter" "db_password" {
+  name  = "/${var.service_namespace}/${var.environment_id}/db/password"
+  type  = "SecureString"
+  value = random_password.db.result
+}
+
+
 resource "aws_db_instance" "db" {
   allocated_storage      = 20
   engine                 = "postgres"
