@@ -2,3 +2,8 @@ node_modules
 .idea
 .aider*
 .env
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+terraform/.terraform
+terraform/terraform.tfvars

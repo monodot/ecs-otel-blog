@@ -89,7 +89,7 @@ docker compose up
 **OR**, if you don't have a Grafana Cloud account yet (why not?), and you would rather start the application and ship to a local Loki, Tempo & Mimir stack, and visualise in Grafana, run this:
 
 ```shell
-docker compose --profile local --env-file local.env up
+docker compose --profile local --env-file .env.local up
 ```
 
 The API will be available at http://localhost:8080, and if you chose the "local" profile option then Grafana will be running at http://localhost:3000. Try hitting one of the endpoints:

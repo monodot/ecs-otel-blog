@@ -1,0 +1,2 @@
+otel_exporter_otlp_endpoint="https://otlp-gateway-prod-<REGION>.grafana.net/otlp"
+otel_exporter_otlp_headers="Authorization=Basic xxxxxxxxxxxxxxxx"
