@@ -29,7 +29,8 @@ resource "aws_iam_role_policy" "task_ssm_policy" {
         ]
         Resource = [
           aws_ssm_parameter.otel_endpoint.arn,
-          aws_ssm_parameter.otel_headers.arn
+          aws_ssm_parameter.otel_headers.arn,
+          aws_ssm_parameter.db_password.arn,
         ]
       }
     ]
